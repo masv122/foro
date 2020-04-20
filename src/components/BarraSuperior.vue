@@ -1,54 +1,62 @@
 <template>
   <div>
     <b-navbar class="my-3" toggleable="lg" type="primary" variant="white">
-      <b-navbar-brand :to="{name: 'Home'}"><i class="fa fa-home" aria-hidden="true"></i></b-navbar-brand>
+      <b-navbar-brand :to="{ name: 'Home' }"
+        ><i class="fa fa-home" aria-hidden="true"></i
+      ></b-navbar-brand>
       <b-collapse id="navbar-toggle-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
-            <b-input-group left="Username">
-              <template v-slot:prepend>
-                <b-input-group-text
-                  ><i class="fa fa-search" aria-hidden="true"></i
-                ></b-input-group-text>
-              </template>
-              <b-form-input
-                size="sm"
-                class="mr-sm-2"
-                placeholder="Search"
-              ></b-form-input>
-              <b-input-group-button slot="right">
-                <b-button size="sm" class="my-2 my-sm-0" type="submit"
-                  >Buscar</b-button
+            <b-form-group>
+              <b-input-group class="inputGroup border-primary">
+                <template v-slot:prepend>
+                  <b-input-group-text class="bg-white slot border-primary"
+                    ><i class="fa fa-search" aria-hidden="true"></i
+                  ></b-input-group-text>
+                </template>
+                <b-form-input
+                  id="input-1"
+                  type="text"
+                  required
+                  placeholder="Buscar"
+                  class="input border-primary"
                 >
-              </b-input-group-button>
-            </b-input-group>
+                </b-form-input>
+              </b-input-group>
+            </b-form-group>
           </b-nav-form>
-          <b-navbar-nav class="usuario">
+          <b-navbar-nav v-if="!loginVisible" class="usuario">
             <b-nav-item href="#"
-              ><i class="fa fa-user-circle" aria-hidden="true"></i
-            ></b-nav-item>
-            <b-nav-item href="#" disabled
-              ><i class="fa fa-medal"></i
-            ></b-nav-item>
-            <b-nav-item href="#" disabled
-              ><i class="fa fa-medal"></i
-            ></b-nav-item>
-            <b-nav-item href="#" disabled
-              ><i class="fa fa-medal"></i
-            ></b-nav-item>
+              ><i class="fa fa-user-circle"
+                ><sup>
+                  <i class="fa fa-medal"
+                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                  >
+                  <i class="fa fa-medal"
+                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                  >
+                  <i class="fa fa-medal"
+                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                  >
+                </sup>
+              </i>
+            </b-nav-item>
             <b-nav-item
               ><i class="fa fa-bell" aria-hidden="true"
                 ><sup><b-badge pill variant="light">0</b-badge></sup></i
               ></b-nav-item
             >
           </b-navbar-nav>
-          <b-nav-item-dropdown no-caret right>
+          <b-nav-item-dropdown no-caret right v-if="!loginVisible">
             <template v-slot:button-content>
               <i class="fa fa-cogs" aria-hidden="true"></i>
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'Login' }">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-nav-item v-if="loginVisible">
+            <i class="fa fa-user-circle" aria-hidden="true"></i>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
       <b-navbar-toggle target="navbar-toggle-collapse">
@@ -62,14 +70,42 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  name: "BarraSuperior"
+  name: "BarraSuperior",
+  computed: {
+    ...mapGetters("login", ["loginVisible"])
+  }
 };
 </script>
 
 <style  scoped>
-.usuario .fa,
-.fa-cogs, .fa-home {
-  font-size: 1.5rem;
+.fa-medal {
+  font-size: 1rem;
+}
+.fa-user-circle, .usuario .fa-user-circle,
+.fa-cogs,
+.fa-home,
+.usuario .fa-bell {
+  font-size: 2rem;
+}
+.inputGroup {
+  color: #495057;
+  background-color: #fff;
+  border-radius: 20px;
+  outline: 0;
+}
+.input {
+  border-radius: 20px;
+  border-left: unset;
+}
+.slot {
+  border-right: unset;
+  border-radius: 20px;
+}
+.input:focus {
+  border-color: unset;
+  outline: 0;
+  box-shadow: unset;
 }
 </style>

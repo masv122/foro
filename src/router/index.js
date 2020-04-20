@@ -24,6 +24,21 @@ const routes = [
     path: '/categoria/tema',
     name: 'Tema',
     component: () => import('../views/Tema.vue')
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/registro',
+    name: 'Registro',
+    component: () => import('../views/Registro.vue')
+  },
+  {
+    path: '/categoria/crear-tema',
+    name: 'Crear Tema',
+    component: () => import('../views/CrearTema.vue')
   }
 ]
 

@@ -8,15 +8,24 @@
       class="shadow tema"
     >
       <template v-slot:header>
-        <b-link class="text-white"><h3>Tema</h3></b-link>
+        <b-link :to="{ name: 'Tema' }" class="text-white"><h3>Tema</h3></b-link>
         <div class="text-white">
-          <a :to="{ name: 'Tema' }"
-            ><i class="text-white fa fa-user-circle mx-2" aria-hidden="true"></i
-          ></a>
+          <b-link class="text-white">
+            <i class="fa fa-user-circle"
+              ><sup>
+                <i class="fa fa-medal"
+                  ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                >
+                <i class="fa fa-medal"
+                  ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                >
+                <i class="fa fa-medal"
+                  ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                >
+              </sup>
+            </i>
+          </b-link>
           Nombre
-          <i class="fa fa-medal mx-1"></i>
-          <i class="fa fa-medal mx-1"></i>
-          <i class="fa fa-medal mx-1"></i>
         </div>
       </template>
       <b-row>
@@ -38,7 +47,7 @@
         <i class="fa fa-tags" aria-hidden="true"></i>
       </template>
     </b-card>
-    <hr/>
+    <hr />
   </div>
 </template>
 
@@ -53,7 +62,7 @@ export default {
 </script>
 
 <style scoped>
-.tema{
-    border: 1px #28a3ff solid;
+.tema {
+  border: 1px #28a3ff solid;
 }
 </style>

@@ -1,16 +1,16 @@
 <template>
   <div>
     <div>
-      <Jumbotron/>
-      <Categorias v-for="(categoria, index) in categorias" :key="index"/>
+      <Jumbotron />
+      <Categorias v-for="(categoria, index) in categorias" :key="index" />
     </div>
   </div>
 </template>
 
 <script>
-
-  import Jumbotron from "@/components/Jumbotron.vue";
-  import Categorias from "@/components/Categorias.vue";
+import Jumbotron from "@/components/Jumbotron.vue";
+import Categorias from "@/components/Categorias.vue";
+import { mapMutations } from "vuex";
 
 export default {
   name: "Home",
@@ -20,10 +20,14 @@ export default {
   },
   data() {
     return {
-      categorias: [
-        {titulo: 'titulo'}
-      ]
-    }
+      categorias: [{ titulo: "titulo" }]
+    };
   },
+  methods: {
+    ...mapMutations("login", ["setLoginVisible"])
+  },
+  created() {
+    this.setLoginVisible(false);
+  }
 };
 </script>

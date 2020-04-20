@@ -2,12 +2,21 @@
   <div>
     <b-card header-tag="header" class="tema">
       <div>
-        <a :to="{ name: 'Tema' }"
-          ><i class="fa fa-user-circle mx-2" aria-hidden="true"></i
-        ></a>
-        <i class="fa fa-medal mx-1"></i>
-        <i class="fa fa-medal mx-1"></i>
-        <i class="fa fa-medal mx-1"></i>
+        <a :to="{ name: 'Tema' }">
+          <i class="fa fa-user-circle mx-2"
+            ><sup>
+              <i class="fa fa-medal"
+                ><sup><b-badge pill variant="light">0</b-badge></sup></i
+              >
+              <i class="fa fa-medal"
+                ><sup><b-badge pill variant="light">0</b-badge></sup></i
+              >
+              <i class="fa fa-medal"
+                ><sup><b-badge pill variant="light">0</b-badge></sup></i
+              >
+            </sup>
+          </i>
+        </a>
       </div>
       <template v-slot:header>
         <b-link class="text-dark" :to="{ name: 'Tema' }"><h3>Tema</h3></b-link>
@@ -35,7 +44,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-a {
+.fa-user-circle {
   font-size: 2rem;
 }
 .tema {

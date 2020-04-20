@@ -1,13 +1,22 @@
 <template>
-    <div>
+  <div>
     <b-card border-variant="primary" footer-tag="footer">
       <div class="my-3">
-        <a href="#"
-          ><i class="fa fa-user-circle mx-2" aria-hidden="true"></i
-        ></a>
-        <i class="fa fa-medal mx-1"></i>
-        <i class="fa fa-medal mx-1"></i>
-        <i class="fa fa-medal mx-1"></i>
+        <b-link>
+          <i class="fa fa-user-circle"
+            ><sup>
+              <i class="fa fa-medal"
+                ><sup><b-badge pill variant="light">0</b-badge></sup></i
+              >
+              <i class="fa fa-medal"
+                ><sup><b-badge pill variant="light">0</b-badge></sup></i
+              >
+              <i class="fa fa-medal"
+                ><sup><b-badge pill variant="light">0</b-badge></sup></i
+              >
+            </sup>
+          </i>
+        </b-link>
       </div>
       <b-card-text>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore magni
@@ -16,18 +25,15 @@
         unde ut quia distinctio!
       </b-card-text>
       <template v-slot:footer>
-          <i class="fa fa-tags" aria-hidden="true"></i>
+        <i class="fa fa-tags" aria-hidden="true"></i>
       </template>
     </b-card>
-    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        
-    }
+export default {};
 </script>
 
 <style lang="scss" scoped>
-
 </style>

@@ -13,6 +13,7 @@
           out within the larger container.
         </p>
       </b-jumbotron>
+      <NavCategoria />
       <Temas />
       <Temas />
       <Paginacion />
@@ -23,11 +24,13 @@
 <script>
 import Temas from "@/components/Temas.vue";
 import Paginacion from "@/components/Paginacion.vue";
+import NavCategoria from "@/components/NavCategoria.vue";
 export default {
   name: "Categoria",
   components: {
     Temas,
-    Paginacion
+    Paginacion,
+    NavCategoria
   }
 };
 </script>

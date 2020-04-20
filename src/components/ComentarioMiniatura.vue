@@ -2,10 +2,21 @@
   <div>
        <b-card title="Mejor Comentario" border-variant="success">
       <div>
-        <a href="#"><i class="fa fa-user-circle mx-2" aria-hidden="true"></i></a>
-        <i class="fa fa-medal mx-1"></i>
-        <i class="fa fa-medal mx-1"></i>
-        <i class="fa fa-medal mx-1"></i>
+        <a href="#">
+          <i class="fa fa-user-circle"
+                ><sup>
+                  <i class="fa fa-medal"
+                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                  >
+                  <i class="fa fa-medal"
+                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                  >
+                  <i class="fa fa-medal"
+                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
+                  >
+                </sup>
+              </i>
+        </a>
       </div>
       <b-card-text>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore magni

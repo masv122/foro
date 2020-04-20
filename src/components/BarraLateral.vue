@@ -1,9 +1,6 @@
 <template>
   <div class="barra">
-    <b-navbar-nav
-      class="nav_lateral"
-      align="center"
-    >
+    <b-navbar-nav class="nav_lateral" align="center">
       <b-nav-item>
         <div class="contenedor_items">
           <div class="icono-items" id="icono-items">
@@ -16,7 +13,7 @@
             <a><i class="fa fa-star" aria-hidden="true"></i></a>
           </div></div
       ></b-nav-item>
-      <b-nav-item
+      <b-nav-item v-if="!loginVisible"
         ><div class="contenedor_items">
           <div class="icono-items" id="icono-items">
             <a href=""
@@ -24,13 +21,13 @@
             ></a>
           </div></div
       ></b-nav-item>
-      <b-nav-item
+      <b-nav-item v-if="!loginVisible"
         ><div class="contenedor_items">
           <div class="icono-items" id="icono-items">
             <a href=""><i class="fa fa-list" aria-hidden="true"></i></a>
           </div></div
       ></b-nav-item>
-      <b-nav-item>
+      <b-nav-item v-if="!loginVisible">
         <div class="contenedor_items">
           <div class="icono-items" id="icono-items">
             <a href=""><i class="fa fa-heart" aria-hidden="true"></i></a>
@@ -49,13 +46,17 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  name: "BarraLateral"
+  name: "BarraLateral",
+  computed: {
+    ...mapGetters("login", ["loginVisible"])
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.barra{
+.barra {
   position: fixed;
   padding-left: 1.5rem;
 }
@@ -72,7 +73,7 @@ export default {
   color: #fff;
 }
 
-.contenedor_items a:hover{
+.contenedor_items a:hover {
   color: #111;
 }
 
