@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import login from "@/modules/login";
+import usuarios from "@/modules/usuarios";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -10,7 +11,10 @@ export default new Vuex.Store({
   },
   actions: {
   },
+  getters: {
+  },
   modules: {
-    login
+    login,
+    usuarios
   }
 })

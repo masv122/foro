@@ -36,25 +36,22 @@
         <b-nav-item><i class="fa fa-heart" aria-hidden="true"></i></b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto nav-right">
-        <b-nav-item href="#"><i class="fa fa-user-circle"> </i> </b-nav-item>
-        <b-nav-item
+        <b-nav-item href="#" v-if="!loginVisible"><i class="fa fa-user-circle"> </i> </b-nav-item>
+        <b-nav-item v-if="!loginVisible"
           ><i class="fa fa-bell" aria-hidden="true"
             ><sup><b-badge pill variant="light">0</b-badge></sup></i
           ></b-nav-item
         >
-        <b-nav-item
+        <b-nav-item v-if="!loginVisible"
           ><i class="fa fa-envelope-open" aria-hidden="true"></i
         ></b-nav-item>
-        <b-nav-item-dropdown no-caret right v-if="!loginVisible">
+        <b-nav-item-dropdown no-caret right>
           <template v-slot:button-content>
             <i class="fa fa-cogs" aria-hidden="true"></i>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
           <b-dropdown-item :to="{ name: 'Login' }">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
-        <b-nav-item v-if="loginVisible">
-          <i class="fa fa-user-circle" aria-hidden="true"></i>
-        </b-nav-item>
         <b-nav-item>
           <i class="fa fa-question-circle" aria-hidden="true"></i
         ></b-nav-item>

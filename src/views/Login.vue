@@ -1,11 +1,11 @@
 <template>
   <div>
-    <b-form class="py-2 px-4 w-50 mt-5 mx-auto text-center shadow-sm rounded">
+    <b-form class="py-2 px-4 w-50 login mx-auto text-center shadow-sm rounded" @submit.prevent="">
       <i class="fa fa-user-circle text-primary" aria-hidden="true"></i>
       <h4 class="display-4">Ingresa</h4>
       <b-form-row class="my-3">
         <b-col cols="12">
-          <b-form-group id="input-group-1" label-for="input-1">
+          <b-form-group id="input-group-usuario" label-for="usuario">
             <b-input-group class="inputGroup">
               <template v-slot:prepend>
                 <b-input-group-text class="bg-white border-primary slot"
@@ -13,9 +13,10 @@
                 ></b-input-group-text>
               </template>
               <b-form-input
-                id="input-1"
+                id="usuario"
                 type="text"
                 required
+                v-model="ID_usuario"
                 placeholder="Ingrese su Usuario"
                 class="input border-primary"
               >
@@ -26,7 +27,7 @@
       </b-form-row>
       <b-form-row class="my-3">
         <b-col cols="12">
-          <b-form-group id="input-group-2" label-for="input-2">
+          <b-form-group id="input-group-contraseña" label-for="contraseña">
             <b-input-group class="inputGroup">
               <template v-slot:prepend>
                 <b-input-group-text class="bg-white border-primary slot"
@@ -35,13 +36,15 @@
               </template>
               <b-form-input
                 type="password"
-                id="input-2"
+                v-model="PASS_usuario"
+                id="contraseña"
                 required
                 class="input border-primary"
                 placeholder="Ingrese su contraseña"
               ></b-form-input>
             </b-input-group>
           </b-form-group>
+          <p class="text-danger" v-if="error">{{ resultado }}</p>
         </b-col>
       </b-form-row>
       <b-form-row class="my-3 d-block text-left">
@@ -56,8 +59,8 @@
         <b-button
           type="submit"
           class="ml-auto mr-1"
-          :to="{ name: 'Home' }"
           variant="success"
+          @click="loginProceso()"
           >Ingresar</b-button
         >
         <b-button
@@ -73,18 +76,39 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 
 export default {
   name: "Login",
   data() {
     return {
-      status: "not_accepted"
+      status: "not_accepted",
+      ID_usuario: '',
+      PASS_usuario: '',
+      resultado: 'Cedula o contraseña incorrecta',
+      error: false
     };
   },
   components: {},
   methods: {
-    ...mapMutations("login", ["setLoginVisible"])
+    ...mapMutations("login", ["setLoginVisible"]),
+    ...mapActions("login", ["logIn"]),
+    loginProceso() {
+      const resultado = this.logIn(this.getDatos());
+      resultado.then(res => {
+        if (res) {
+          this.$router.push('/');
+        } else {
+          this.error = true;
+        }
+      });
+    },
+    getDatos() {
+      return {
+        ID_usuario: this.ID_usuario,
+        PASS_usuario: this.PASS_usuario
+      };
+    }
   },
   created() {
     this.setLoginVisible(true);
@@ -93,6 +117,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.login {
+  margin-top: 10rem;
+}
 .fa-user-circle {
   font-size: 5rem;
 }
