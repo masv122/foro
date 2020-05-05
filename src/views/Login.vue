@@ -1,6 +1,9 @@
 <template>
   <div>
-    <b-form class="py-2 px-4 w-50 login mx-auto text-center shadow-sm rounded" @submit.prevent="">
+    <b-form
+      class="py-2 px-4 w-50 login mx-auto text-center shadow-sm rounded"
+      @submit.prevent=""
+    >
       <i class="fa fa-user-circle text-primary" aria-hidden="true"></i>
       <h4 class="display-4">Ingresa</h4>
       <b-form-row class="my-3">
@@ -48,7 +51,7 @@
         </b-col>
       </b-form-row>
       <b-form-row class="my-3 d-block text-left">
-        <b-form-checkbox value="accepted" switch unchecked-value="not_accepted">
+        <b-form-checkbox v-model="recuerdame" switch>
           Recuerdame
         </b-form-checkbox>
         <b-link href="#">
@@ -76,28 +79,30 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Login",
   data() {
     return {
-      status: "not_accepted",
-      ID_usuario: '',
-      PASS_usuario: '',
-      resultado: 'Cedula o contraseña incorrecta',
+      recuerdame: false,
+      ID_usuario: "",
+      PASS_usuario: "",
+      resultado: "Cedula o contraseña incorrecta",
       error: false
     };
   },
   components: {},
   methods: {
-    ...mapMutations("login", ["setLoginVisible"]),
     ...mapActions("login", ["logIn"]),
     loginProceso() {
-      const resultado = this.logIn(this.getDatos());
+      const resultado = this.logIn({
+        usuario: this.getDatos(),
+        recuerdame: this.recuerdame
+      });
       resultado.then(res => {
         if (res) {
-          this.$router.push('/');
+          this.$router.push("/");
         } else {
           this.error = true;
         }
@@ -109,9 +114,6 @@ export default {
         PASS_usuario: this.PASS_usuario
       };
     }
-  },
-  created() {
-    this.setLoginVisible(true);
   }
 };
 </script>

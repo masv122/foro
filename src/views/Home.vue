@@ -10,7 +10,7 @@
 <script>
 import Jumbotron from "@/components/Jumbotron.vue";
 import Categorias from "@/components/Categorias.vue";
-import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -23,11 +23,12 @@ export default {
       categorias: [{ titulo: "titulo" }]
     };
   },
+  computed: {},
   methods: {
-    ...mapMutations("login", ["setLoginVisible"])
+    ...mapActions("login", ["logInStorage"])
   },
   created() {
-    this.setLoginVisible(false);
+    this.logInStorage();
   }
 };
 </script>

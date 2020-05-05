@@ -6,12 +6,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    cargando: false
   },
   mutations: {
+    setCargando(state){
+      state.cargando = !state.cargando;
+    }
   },
   actions: {
   },
   getters: {
+    cargando: state => state.cargando
   },
   modules: {
     login,

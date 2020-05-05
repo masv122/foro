@@ -2,7 +2,7 @@
   <div>
     <b-form
       class="py-2 px-4 w-50 mx-auto registro text-center shadow rounded"
-      @submit.prevent=""
+      @submit.prevent="onSubmit"
     >
       <i class="fa fa-user-plus text-primary" aria-hidden="true"></i>
       <h4 class="display-4">Registro</h4>
@@ -111,8 +111,8 @@
       <b-form-row class="my-3">
         <b-button
           type="submit"
-          @disabled="isDisabled"
-          @click="registrar"
+          ref="submit"
+          :disabled="!isDisabled"
           class="mr-auto ml-1"
           variant="primary"
           block
@@ -120,12 +120,49 @@
         >
       </b-form-row>
       <p class="text-danger" v-if="error">{{ resultado }}</p>
+
+      <b-overlay
+        :show="busy"
+        no-wrap
+        @shown="onShown"
+        @hidden="onHidden"
+        class="position-fixed"
+      >
+        <template v-slot:overlay>
+          <div
+            v-if="processing"
+            class="text-center p-4 bg-primary text-light rounded"
+          >
+            <h4 class="mb-3">Usuario Creado Satisfactoriamente</h4>
+            <h6 class="mb-3">Sera redireccionado a la pantalla de inicio</h6>
+          </div>
+          <div
+            v-else
+            ref="dialog"
+            tabindex="-1"
+            role="dialog"
+            aria-modal="false"
+            aria-labelledby="form-confirm-label"
+            class="text-center p-3"
+          >
+            <p><strong id="form-confirm-label">Confirmar Registro</strong></p>
+            <div class="d-flex">
+              <b-button variant="outline-danger" class="mr-3" @click="onCancel">
+                Cancelar
+              </b-button>
+              <b-button variant="outline-success" @click="onOK"
+                >¡Registrame!</b-button
+              >
+            </div>
+          </div>
+        </template>
+      </b-overlay>
     </b-form>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Registro",
@@ -159,7 +196,11 @@ export default {
         { value: "pas", text: "Pasantia" },
         { value: "pos", text: "Post-Grado" }
       ],
-      error: false
+      error: false,
+      busy: false,
+      processing: false,
+      counter: 1,
+      interval: null
     };
   },
   components: {},
@@ -170,12 +211,11 @@ export default {
         : this.reContraseñaCorrecta;
     },
     isDisabled() {
-      return this.contraseña != this.reContraseña;
+      return this.contraseña == this.reContraseña;
     }
   },
   methods: {
     ...mapActions("usuarios", ["registro"]),
-    ...mapMutations("login", ["setLoginVisible"]),
     getNuevoUsuario() {
       return {
         ID_usuario: this.cedula,
@@ -190,15 +230,54 @@ export default {
       const resultado = this.registro(this.getNuevoUsuario());
       resultado.then(res => {
         if (res) {
-          this.$router.push("/");
+          this.registroOK();
         } else {
           this.error = true;
         }
       });
+    },
+    clearInterval() {
+      if (this.interval) {
+        clearInterval(this.interval);
+        this.interval = null;
+      }
+    },
+    onShown() {
+      this.$refs.dialog.focus();
+    },
+    onHidden() {
+      this.$refs.submit.focus();
+    },
+    onSubmit() {
+      this.processing = false;
+      this.busy = true;
+    },
+    onCancel() {
+      this.busy = false;
+    },
+    onOK() {
+      this.registrar();
+    },
+    registroOK() {
+      this.counter = 1;
+      this.processing = true;
+      // Simulate an async request
+      this.clearInterval();
+      this.interval = setInterval(() => {
+        if (this.counter < 20) {
+          this.counter = this.counter + 1;
+        } else {
+          this.clearInterval();
+          this.$nextTick(() => {
+            this.busy = this.processing = false;
+          });
+          this.$router.push("/");
+        }
+      }, 150);
     }
   },
-  created() {
-    this.setLoginVisible(true);
+  beforeDestroy() {
+    this.clearInterval();
   }
 };
 </script>
