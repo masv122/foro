@@ -2,20 +2,28 @@
   <div>
     <div>
       <b-jumbotron bg-variant="info" text-variant="white">
-        <template v-slot:header>Categoria</template>
+        <template v-slot:header>{{ categoria.Titulo }}</template>
         <template v-slot:lead>
-          This is a simple hero unit, a simple jumbotron-style component for
-          calling extra attention to featured content or information.
+          {{ categoria.Desc_categoria }}
         </template>
         <hr class="my-4" />
-        <p>
-          It uses utility classes for typography and spacing to space content
-          out within the larger container.
-        </p>
+        <h6>Temas: {{ categoria.Nro_temas }}</h6>
+        <h6>
+          Comentarios: {{ categoria.Nro_mensajes }}
+          <h6 class="float-right">
+            ID Categoria: {{ categoria.ID_categoria }}
+          </h6>
+        </h6>
       </b-jumbotron>
       <NavCategoria />
-      <Temas />
-      <Temas />
+      <Temas
+        :Titulo="tema.Titulo"
+        :IDcreador="tema.IDcreador"
+        :contenido="tema.contenido"
+        :ID_tema="tema.ID_tema"
+        v-for="(tema, index) in temas"
+        :key="index"
+      />
       <Paginacion />
     </div>
   </div>
@@ -25,12 +33,25 @@
 import Temas from "@/components/Temas.vue";
 import Paginacion from "@/components/Paginacion.vue";
 import NavCategoria from "@/components/NavCategoria.vue";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Categoria",
   components: {
     Temas,
     Paginacion,
     NavCategoria
+  },
+  computed: {
+    ...mapGetters("temas", ["temas"]),
+    ...mapGetters("categorias", ["categoria"])
+  },
+  methods: {
+    ...mapActions("temas", ["updateTemas"]),
+    ...mapActions("categorias", ["loadCategoria"])
+  },
+  created() {
+    this.updateTemas(this.$route.params.id);
+    this.loadCategoria(this.$route.params.id);
   }
 };
 </script>

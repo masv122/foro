@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import login from "@/modules/login";
 import usuarios from "@/modules/usuarios";
+import categorias from "@/modules/categorias";
+import temas from "@/modules/temas";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -20,6 +22,8 @@ export default new Vuex.Store({
   },
   modules: {
     login,
-    usuarios
+    usuarios,
+    categorias,
+    temas
   }
 })

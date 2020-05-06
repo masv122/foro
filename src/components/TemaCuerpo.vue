@@ -19,10 +19,7 @@
         </b-link>
       </div>
       <b-card-text>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore magni
-        neque laboriosam quod iure eum debitis, assumenda quis sapiente!
-        Blanditiis perferendis aliquam quod voluptatibus reprehenderit molestias
-        unde ut quia distinctio!
+        {{ contenido }}
       </b-card-text>
       <template v-slot:footer>
         <i class="fa fa-tags" aria-hidden="true"></i>
@@ -32,7 +29,15 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'TemaCuerpo',
+  props: {
+    contenido: {
+      type: String,
+      default: ''
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -16,12 +16,12 @@ const routes = [
     component: () => import('../views/About.vue')
   },
   {
-    path: '/categoria',
+    path: '/categorias/:id',
     name: 'Categoria',
     component: () => import('../views/Categoria.vue')
   },
   {
-    path: '/categoria/tema',
+    path: '/categorias/:idCategoria/temas/:idTema',
     name: 'Tema',
     component: () => import('../views/Tema.vue')
   },
@@ -36,7 +36,7 @@ const routes = [
     component: () => import('../views/Registro.vue')
   },
   {
-    path: '/categoria/crear-tema',
+    path: '/categoria/:id/crear-tema',
     name: 'Crear Tema',
     component: () => import('../views/CrearTema.vue')
   }

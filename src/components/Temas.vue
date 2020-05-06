@@ -8,7 +8,14 @@
       class="shadow tema"
     >
       <template v-slot:header>
-        <b-link :to="{ name: 'Tema' }" class="text-white"><h3>Tema</h3></b-link>
+        <b-link
+          :to="{
+            name: 'Tema',
+            params: { idCategoria: IDcategoria, idTema: ID_tema }
+          }"
+          class="text-white"
+          ><h3>{{ Titulo }}</h3></b-link
+        >
         <div class="text-white">
           <b-link class="text-white">
             <i class="fa fa-user-circle"
@@ -25,17 +32,14 @@
               </sup>
             </i>
           </b-link>
-          Nombre
+          {{ IDcreador }}
         </div>
       </template>
       <b-row>
         <b-col cols="8">
           <b-card-text>
             <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa aut
-              saepe dicta perspiciatis delectus. Tempora vitae, sapiente earum
-              cupiditate ducimus dolorem perferendis fugiat itaque nisi,
-              molestiae porro hic corporis recusandae?
+              {{ contenido }}
             </p>
           </b-card-text>
         </b-col>
@@ -55,6 +59,40 @@
 import ComentarioMiniatura from "@/components/ComentarioMiniatura.vue";
 export default {
   name: "Temas",
+  props: {
+    ID_tema: {
+      type: String,
+      default: ""
+    },
+    Titulo: {
+      type: String,
+      default: ""
+    },
+    IDcategoria: {
+      type: String,
+      default: ""
+    },
+    IDcreador: {
+      type: String,
+      default: ""
+    },
+    Fecha: {
+      type: Date,
+      default: null
+    },
+    Nro_respuestas: {
+      type: String,
+      default: ""
+    },
+    Fecha_ultimo_mensaje: {
+      type: Date,
+      default: null
+    },
+    contenido: {
+      type: String,
+      default: ""
+    }
+  },
   components: {
     ComentarioMiniatura
   }

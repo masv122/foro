@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <BarraSuperior />
-    <b-container fluid class="contenido">
+    <b-container class="contenido">
       <b-overlay :show="cargando" rounded="sm">
         <router-view class="mt-5" :aria-hidden="cargando ? 'true' : null" />
       </b-overlay>

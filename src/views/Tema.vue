@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h6 class="display-4">Titulo del tema</h6>
+    <h6 class="display-4">{{ tema.titulo }}</h6>
     <div class="d-flex">
-      <p>Enviado: <span>fecha</span></p>
-      <p class="ml-3">Respuestas: <span>Respuestas</span></p>
+      <p>Enviado: <span>{{ tema.Fecha}}</span></p>
+      <p class="ml-3">Respuestas: <span>{{ tema.Nro_respuestas }}</span></p>
       <p class="ml-3">Visitado: <span>Visitado</span></p>
-      <p class="ml-3">Categoria: <span>Categoria</span></p>
+      <p class="ml-3">Categoria: <span>{{ categoria.Titulo }}</span></p>
     </div>
-    <TemaCuerpo />
+    <TemaCuerpo :contenido="tema.contenido"/>
     <NavTema />
     <Respuesta />
   </div>
@@ -17,13 +17,24 @@
 import TemaCuerpo from "@/components/TemaCuerpo.vue";
 import NavTema from "@/components/NavTema.vue";
 import Respuesta from "@/components/Respuesta.vue";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Tema",
   components: {
     TemaCuerpo,
     NavTema,
     Respuesta
-  }
+  },
+  computed: {
+    ...mapGetters('temas', ['tema']),
+    ...mapGetters('categorias', ['categoria'])
+  },
+  methods: {
+    ...mapActions('temas', ['updateTema'])
+  },
+  created () {
+    this.updateTema(this.$route.params.idTema);
+  },
 };
 </script>
 

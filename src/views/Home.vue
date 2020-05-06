@@ -2,7 +2,7 @@
   <div>
     <div>
       <Jumbotron />
-      <Categorias v-for="(categoria, index) in categorias" :key="index" />
+      <Categorias v-for="(categoria, index) in categorias" :categoria="categoria" :key="index" />
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
 <script>
 import Jumbotron from "@/components/Jumbotron.vue";
 import Categorias from "@/components/Categorias.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Home",
@@ -18,17 +18,16 @@ export default {
     Jumbotron,
     Categorias
   },
-  data() {
-    return {
-      categorias: [{ titulo: "titulo" }]
-    };
+  computed: {
+    ...mapGetters("categorias", ["categorias"])
   },
-  computed: {},
   methods: {
-    ...mapActions("login", ["logInStorage"])
+    ...mapActions("login", ["logInStorage"]),
+    ...mapActions("categorias", ["loadCategorias"])
   },
   created() {
     this.logInStorage();
+    this.loadCategorias();
   }
 };
 </script>
