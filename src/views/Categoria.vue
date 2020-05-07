@@ -17,10 +17,14 @@
       </b-jumbotron>
       <NavCategoria />
       <Temas
-        :Titulo="tema.Titulo"
-        :IDcreador="tema.IDcreador"
-        :contenido="tema.contenido"
         :ID_tema="tema.ID_tema"
+        :Titulo="tema.Titulo"
+        :IDcategoria="IDcategoria"
+        :IDcreador="tema.IDcreador"
+        :Fecha="tema.Fecha"
+        :Nro_respuestas="tema.Nro_respuestas"
+        :Fecha_ultimo_mensaje="tema.Fecha_ultimo_mensaje"
+        :contenido="tema.contenido"
         v-for="(tema, index) in temas"
         :key="index"
       />

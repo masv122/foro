@@ -5,7 +5,16 @@ export default {
   state: {
     value: "my value",
     temas: [],
-    tema: null,
+    tema: {
+      Fecha: "",
+      Fecha_ultimo_mensaje: "",
+      ID_tema: "",
+      IDcategoria: "",
+      IDcreador: "",
+      Nro_respuestas: "",
+      Titulo: "",
+      contenido: "",
+    },
   },
   getters: {
     value: (state) => {
@@ -31,9 +40,11 @@ export default {
   },
   actions: {
     updateTemas: async function({ commit }, id) {
+      commit("setCargando", null, { root: true });
       const temas = await Vue.axios
         .get(`/api/temas-categorias/${id}`)
         .then((res) => {
+          commit("setCargando", null, { root: true });
           if (res.data.error) {
             return null;
           } else {
@@ -46,9 +57,11 @@ export default {
       commit("updateTemas", temas);
     },
     enviarTema: async function({ commit }, tema) {
+      commit("setCargando", null, { root: true });
       const resultado = await Vue.axios
         .post("/api/temas/nuevo", tema)
         .then((res) => {
+          commit("setCargando", null, { root: true });
           if (res.data.error) {
             return false;
           } else {
@@ -62,9 +75,11 @@ export default {
       return resultado;
     },
     updateTema: async function({ commit }, id) {
+      commit("setCargando", null, { root: true });
       const temas = await Vue.axios
         .get(`/api/temas/${id}`)
         .then((res) => {
+          commit("setCargando", null, { root: true });
           if (res.data.error) {
             return null;
           } else {
@@ -74,7 +89,7 @@ export default {
         .catch((e) => {
           return e;
         });
-      commit("updateTemas", temas);
+      commit("updateTema", temas);
     },
   },
 };

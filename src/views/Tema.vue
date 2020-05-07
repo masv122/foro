@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h6 class="display-4">{{ tema.titulo }}</h6>
+    <h6 class="display-4">{{ tema.Titulo }}</h6>
     <div class="d-flex">
-      <p>Enviado: <span>{{ tema.Fecha}}</span></p>
+      <p>Enviado: <span>{{ tema.Fecha }}</span></p>
       <p class="ml-3">Respuestas: <span>{{ tema.Nro_respuestas }}</span></p>
       <p class="ml-3">Visitado: <span>Visitado</span></p>
       <p class="ml-3">Categoria: <span>{{ categoria.Titulo }}</span></p>

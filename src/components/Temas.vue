@@ -14,7 +14,8 @@
             params: { idCategoria: IDcategoria, idTema: ID_tema }
           }"
           class="text-white"
-          ><h3>{{ Titulo }}</h3></b-link
+          ><h3>{{ Titulo }}</h3>
+          <h6 class="float-right">Fecha: {{ Fecha }}</h6></b-link
         >
         <div class="text-white">
           <b-link class="text-white">
@@ -48,7 +49,11 @@
         </b-col>
       </b-row>
       <template v-slot:footer>
-        <i class="fa fa-tags" aria-hidden="true"></i>
+        <h6>Ultimo Mensaje: {{ Fecha_ultimo_mensaje }}</h6>
+        <h6>
+          Comentarios: {{ Nro_respuestas }}
+          <h6 class="float-right">ID Tema: {{ ID_tema }}</h6>
+        </h6>
       </template>
     </b-card>
     <hr />

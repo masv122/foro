@@ -4,7 +4,13 @@ export default {
   namespaced: true,
   state: {
     categorias: null,
-    categoria: null,
+    categoria: {
+      Desc_categoria: "",
+      ID_categoria: "",
+      Nro_mensajes: "",
+      Nro_temas: "",
+      Titulo: "",
+    },
   },
   getters: {
     categorias: (state) => {
@@ -24,9 +30,11 @@ export default {
   },
   actions: {
     loadCategorias: async function({ commit }) {
+      commit("setCargando", null, { root: true });
       const categorias = await Vue.axios
         .get("/api/categorias")
         .then((res) => {
+          commit("setCargando", null, { root: true });
           if (res.data.error) {
             return null;
           } else {
@@ -39,9 +47,11 @@ export default {
       commit("loadCategorias", categorias);
     },
     loadCategoria: async function({ commit }, id) {
+      commit("setCargando", null, { root: true });
       const categoria = await Vue.axios
         .get(`/api/categorias/${id}`)
         .then((res) => {
+          commit("setCargando", null, { root: true });
           if (res.data.error) {
             return null;
           } else {
