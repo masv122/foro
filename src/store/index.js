@@ -5,6 +5,7 @@ import usuarios from "@/modules/usuarios";
 import categorias from "@/modules/categorias";
 import temas from "@/modules/temas";
 import mensajes from "@/modules/mensajes";
+import votos from "@/modules/votos";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     usuarios,
     categorias,
     temas,
-    mensajes
+    mensajes,
+    votos
   },
 });

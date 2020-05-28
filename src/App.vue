@@ -11,7 +11,7 @@
 
 <script>
 import BarraSuperior from "@/components/BarraSuperior.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 // import BarraLateral from "@/components/BarraLateral.vue";
 export default {
   name: "App",
@@ -22,6 +22,14 @@ export default {
   computed: {
     ...mapGetters(['cargando'])
   },
+   methods: {
+    ...mapActions("login", ["logInStorage"]),
+    ...mapActions("categorias", ["loadCategorias"])
+  },
+  created() {
+    this.logInStorage();
+    this.loadCategorias();
+  }
 };
 </script>
 

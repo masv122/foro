@@ -3,14 +3,22 @@
     <b-card
       header-tag="header"
       footer-tag="footer"
-      header-bg-variant="primary"
       footer-bg-variant="white"
-      border-variant="primary"
-      class="shadow"
+      class="shadow-sm"
     >
       <template v-slot:header>
+        <b-button
+          class="float-right"
+          variant="outline-primary"
+          :to="{ name: 'Categoria', params: { id: categoria.ID_categoria } }"
+        >
+          Ir a la categoria <i
+            class="fa fa-arrow-right"
+            aria-hidden="true"
+          ></i>
+        </b-button>
         <b-link
-          class="text-white"
+          class="text-dark"
           :to="{ name: 'Categoria', params: { id: categoria.ID_categoria } }"
         >
           <h3>{{ categoria.Titulo }}</h3>
@@ -35,7 +43,7 @@
       <template v-slot:footer>
         <h6>Temas: {{ nroTemas }}</h6>
         <h6>
-          Comentarios: {{ categoria.Nro_mensajes }}
+          Comentarios: {{ Nro_mensajes }}
           <h6 class="float-right">
             ID Categoria: {{ categoria.ID_categoria }}
           </h6>
@@ -61,14 +69,19 @@ export default {
     return {
       temas: [],
       nroTemas: "",
+      Nro_mensajes: 0
     };
   },
   async created() {
     this.temas = await this.previewTemasCategoria(this.categoria.ID_categoria);
     this.nroTemas = await this.countTemasCategoria(this.categoria.ID_categoria);
+    this.Nro_mensajes = await this.cantComentariosCategorias(
+      this.categoria.ID_categoria
+    );
   },
   methods: {
-    ...mapActions("temas", ["previewTemasCategoria", "countTemasCategoria"])
+    ...mapActions("temas", ["previewTemasCategoria", "countTemasCategoria"]),
+    ...mapActions("mensajes", ["cantComentariosCategorias"])
   },
   components: {
     TemaMiniatura

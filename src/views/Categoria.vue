@@ -1,29 +1,35 @@
 <template>
   <div>
     <div>
-      <b-jumbotron bg-variant="info" text-variant="white" class="mb-3 shadow-sm">
-        <template v-slot:header>{{ categoria.Titulo }}</template>
+      <b-jumbotron
+        bg-variant="white"
+        text-variant="dark"
+        class="mb-3 shadow-sm py-3"
+      >
+        <template v-slot:header><i
+            class="fa fa-code"
+            aria-hidden="true"
+          ></i> {{ categoria.Titulo }}</template>
         <template v-slot:lead>
           {{ categoria.Desc_categoria }}
         </template>
         <hr class="my-4" />
         <h6>Temas: {{ nroTemas }}</h6>
         <h6>
-          Comentarios: {{ categoria.Nro_mensajes }}
+          Comentarios: {{ Nro_mensajes }}
           <h6 class="float-right">
             ID Categoria: {{ categoria.ID_categoria }}
           </h6>
         </h6>
       </b-jumbotron>
       <NavCategoria />
-      <Temas
+      <Tema
         v-for="(tema, index) in temas"
         :ID_tema="tema.ID_tema"
         :Titulo="tema.Titulo"
         :IDcategoria="tema.IDcategoria"
         :IDcreador="tema.IDcreador"
         :Fecha="tema.Fecha"
-        :Nro_respuestas="tema.Nro_respuestas"
         :Fecha_ultimo_mensaje="tema.Fecha_ultimo_mensaje"
         :contenido="tema.contenido"
         :key="index"
@@ -34,21 +40,22 @@
 </template>
 
 <script>
-import Temas from "@/components/Temas.vue";
+import Tema from "@/components/Tema.vue";
 import Paginacion from "@/components/Paginacion.vue";
 import NavCategoria from "@/components/NavCategoria.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Categoria",
   components: {
-    Temas,
+    Tema,
     Paginacion,
     NavCategoria
   },
   data() {
     return {
-      nroTemas: ""
-    }
+      nroTemas: "",
+      Nro_mensajes: 0
+    };
   },
   computed: {
     ...mapGetters("temas", ["temas"]),
@@ -57,14 +64,16 @@ export default {
   methods: {
     ...mapActions("temas", ["updateTemas"]),
     ...mapActions("categorias", ["loadCategoria"]),
+    ...mapActions("mensajes", ["cantComentariosCategorias"]),
     ...mapActions("temas", ["countTemasCategoria"])
-
   },
   async created() {
     await this.updateTemas(this.$route.params.id);
     await this.loadCategoria(this.$route.params.id);
+    this.Nro_mensajes = await this.cantComentariosCategorias(
+      this.categoria.ID_categoria
+    );
     this.nroTemas = await this.countTemasCategoria(this.categoria.ID_categoria);
-
   }
 };
 </script>

@@ -7,7 +7,11 @@
       <p class="ml-3">Visitado: <span>Visitado</span></p>
       <p class="ml-3">Categoria: <span>{{ categoria.Titulo }}</span></p>
     </div>
-    <TemaCuerpo :contenido="tema.contenido" />
+    <TemaCuerpo
+      :contenido="tema.contenido"
+      :nombre="creador.Nombre_usuario"
+      :apellido="creador.Apellido_usuario"
+    />
     <NavTema />
     <Respuesta
       v-for="(mensaje, index) in mensajes"
@@ -15,7 +19,9 @@
       :fecha="mensaje.Fecha"
       :comentario="mensaje.Cuerpo_mensaje"
       :correcta="mensaje.correcta"
-      :IDusuario_creador ="mensaje.IDusuario_creador "
+      :IDusuario_creador="mensaje.IDusuario_creador"
+      :ID_mensaje="mensaje.ID_mensaje"
+      :idTemaCreador="tema.IDcreador"
     />
     <b-form
       class="my-3 bg-white rounded shadow-sm p-3"
@@ -69,22 +75,27 @@ export default {
   data() {
     return {
       tema: {},
+      creador: {
+        Nombre_usuario: "",
+        Apellido_usuario: ""
+      },
       editor: ClassicEditor,
       cuerpo_mensaje: "",
       editorConfig: {
         language: "es"
       },
       error: false,
-      error_cont: "No se pudo enviar el mensaje",
+      error_cont: "No se pudo enviar el mensaje"
     };
   },
   computed: {
     ...mapGetters("categorias", ["categoria"]),
+    ...mapGetters("login", ["usuario"]),
     ...mapGetters("mensajes", ["mensajeActivo", "mensajes"]),
     mensaje() {
       return {
         IDtema: this.tema.ID_tema,
-        IDusuario_creador: this.tema.IDcreador,
+        IDusuario_creador: this.usuario.ID_usuario,
         Cuerpo_mensaje: this.cuerpo_mensaje
       };
     }
@@ -92,14 +103,16 @@ export default {
   methods: {
     ...mapActions("temas", ["updateTema"]),
     ...mapMutations("mensajes", ["updateMensajeActivo", "updateMensajes"]),
-    ...mapActions("mensajes", ["updateMensaje", "updateMensajes"]),
+    ...mapActions("mensajes", ["updateMensaje", "loadMensajesTema"]),
+    ...mapActions("usuarios", ["updateUsuario"]),
     sendMensaje: async function() {
       this.error = await this.updateMensaje(this.mensaje);
     }
   },
-  async created() {
+  async mounted() {
     this.tema = await this.updateTema(this.$route.params.idTema);
-    await this.updateMensajes(this.$route.params.idTema);
+    await this.loadMensajesTema(this.$route.params.idTema);
+    this.creador = await this.updateUsuario(this.tema.IDcreador);
   },
   beforeDestroy() {
     this.updateMensajes([]);

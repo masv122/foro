@@ -3,23 +3,37 @@
     <b-card
       header-tag="header"
       footer-tag="footer"
-      header-bg-variant="primary"
+      header-bg-variant="white"
+      text-variant="dark"
       footer-bg-variant="white"
-      class="shadow-sm tema"
+      class="shadow-sm"
     >
       <template v-slot:header>
+        <b-button
+          class="float-right"
+          variant="outline-primary"
+          :to="{
+            name: 'Tema',
+            params: { idCategoria: IDcategoria, idTema: ID_tema }
+          }"
+        >
+          Ir al tema <i
+            class="fa fa-arrow-right"
+            aria-hidden="true"
+          ></i>
+        </b-button>
         <b-link
           :to="{
             name: 'Tema',
             params: { idCategoria: IDcategoria, idTema: ID_tema }
           }"
-          class="text-white"
+          class="text-dark"
         >
           <h3>{{ Titulo }}</h3>
-          <h6 class="float-right">Fecha: {{ Fecha | moment("dddd, MMMM Do YYYY") }}</h6>
+          <h6 class="mt-3 float-right">Fecha: {{ Fecha | moment("dddd, MMMM Do YYYY") }}</h6>
         </b-link>
-        <div class="text-white">
-          <b-link class="text-white">
+        <div class="text-dark">
+          <b-link class="text-dark">
             <i class="fa fa-user-circle">
             </i>
           </b-link>
@@ -44,7 +58,7 @@
         </b-col>
       </b-row>
       <template v-slot:footer>
-        <h6>Ultimo Mensaje: {{ Fecha_ultimo_mensaje }}</h6>
+        <h6 v-if="ultimoMensaje">Ultimo Mensaje: {{ ultimoMensaje.Fecha | moment("from") }}</h6>
         <h6>
           Comentarios: {{ Nro_respuestas }}
           <h6 class="float-right">ID Tema: {{ ID_tema }}</h6>
@@ -59,7 +73,7 @@
 import ComentarioMiniatura from "@/components/ComentarioMiniatura.vue";
 import { mapActions } from "vuex";
 export default {
-  name: "Temas",
+  name: "Tema",
   props: {
     ID_tema: {
       type: String,
@@ -81,10 +95,6 @@ export default {
       type: String,
       default: ""
     },
-    Nro_respuestas: {
-      type: String,
-      default: ""
-    },
     Fecha_ultimo_mensaje: {
       type: String,
       default: ""
@@ -101,7 +111,9 @@ export default {
     return {
       nombre: "",
       apellido: "",
-      comentarioCorrecto: null
+      comentarioCorrecto: null,
+      Nro_respuestas: 0,
+      ultimoMensaje: null
     };
   },
   computed: {
@@ -111,11 +123,17 @@ export default {
   },
   methods: {
     ...mapActions("usuarios", ["updateUsuario"]),
-    ...mapActions("mensajes", ["loadComentarioCorrecto"])
+    ...mapActions("mensajes", [
+      "loadComentarioCorrecto",
+      "cantComentariosTemas",
+      "loadUltimoMensajeTema"
+    ])
   },
   async mounted() {
     const usuario = await this.updateUsuario(this.IDcreador);
     this.comentarioCorrecto = await this.loadComentarioCorrecto(this.ID_tema);
+    this.Nro_respuestas = await this.cantComentariosTemas(this.ID_tema);
+    this.ultimoMensaje = await this.loadUltimoMensajeTema(this.ID_tema);
     this.nombre = usuario.Nombre_usuario;
     this.apellido = usuario.Apellido_usuario;
   }
@@ -123,7 +141,4 @@ export default {
 </script>
 
 <style scoped>
-.tema {
-  border: 1px #28a3ff solid;
-}
 </style>

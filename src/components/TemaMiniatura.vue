@@ -2,7 +2,7 @@
   <div>
     <b-card
       header-tag="header"
-      class="tema"
+      class="shadow-sm"
     >
       <div>
         <a :to="{ name: 'Tema' }">
@@ -26,7 +26,7 @@
         <div v-html="contenido"></div>
       </b-card-text>
       <b-button
-        variant="primary"
+        variant="outline-primary"
         :to="{ name: 'Tema', params: {
             idCategoria: idCategoria,
             idTema: idTema
@@ -72,8 +72,5 @@ export default {
 <style lang="scss" scoped>
 .fa-user-circle {
   font-size: 2rem;
-}
-.tema {
-  border: 1px #28a3ff solid;
 }
 </style>
