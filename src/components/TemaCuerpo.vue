@@ -1,25 +1,14 @@
 <template>
   <div>
-    <b-card border-variant="primary" footer-tag="footer">
+    <b-card footer-tag="footer" class="shadow-sm">
       <div class="my-3">
         <b-link>
-          <i class="fa fa-user-circle"
-            ><sup>
-              <i class="fa fa-medal"
-                ><sup><b-badge pill variant="light">0</b-badge></sup></i
-              >
-              <i class="fa fa-medal"
-                ><sup><b-badge pill variant="light">0</b-badge></sup></i
-              >
-              <i class="fa fa-medal"
-                ><sup><b-badge pill variant="light">0</b-badge></sup></i
-              >
-            </sup>
+          <i class="fa fa-user-circle">
           </i>
         </b-link>
       </div>
       <b-card-text>
-        {{ contenido }}
+        <div v-html="contenido"></div>
       </b-card-text>
       <template v-slot:footer>
         <i class="fa fa-tags" aria-hidden="true"></i>

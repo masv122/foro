@@ -1,31 +1,38 @@
 <template>
   <div class="shadow-sm p-4">
     <h6 class="display-4">Crear Tema</h6>
-    <b-form class="py-2 px-4 text-center" @submit.prevent="_enviarTema">
+    <b-form
+      class="py-2 px-4 text-center"
+      @submit.prevent="_enviarTema"
+    >
       <h5 class="text-left">Titulo</h5>
-      <b-form-group id="input-group-titulo" label-for="titulo">
+      <b-form-group
+        id="input-group-titulo"
+        label-for="titulo"
+      >
         <b-input-group class="inputGroup">
           <b-form-input
             id="titulo"
             type="text"
             v-model="titulo"
             required
-            placeholder="Ingrese su Cedula"
+            placeholder="Escriba su titulo"
             class="input"
           >
           </b-form-input>
         </b-input-group>
       </b-form-group>
       <h5 class="text-left">Contenido</h5>
-      <b-form-group id="input-group-Contenido" label-for="Contenido">
-        <b-form-textarea
+      <b-form-group
+        id="input-group-Contenido"
+        label-for="Contenido"
+      >
+        <ckeditor
+          :editor="editor"
           id="Contenido"
           v-model="contenido"
-          placeholder="Ingrese Contenido..."
-          rows="3"
-          required
-          max-rows="6"
-        ></b-form-textarea>
+          :config="editorConfig"
+        />
       </b-form-group>
       <h5 class="text-left">Tags</h5>
       <b-form-tags
@@ -40,74 +47,85 @@
       <b-form-row class="my-3">
         <b-button
           type="submit"
-          class="ml-auto ml-1"
+          class="ml-auto ml-1 shadow-sm"
           variant="primary"
-          >Enviar Tema</b-button
-        ><b-button
+        > <i
+            class="fa fa-paper-plane"
+            aria-hidden="true"
+          ></i> Enviar Tema</b-button>
+        <b-button
+          class="ml-1 shadow-sm"
+          variant="success"
+          @click="vistaPrevia = !vistaPrevia"
+        ><i class="fas fa-eye    "></i> Vista Previa</b-button>
+        <b-button
           type="reset"
-          class="mr-auto ml-1"
+          class="mr-auto ml-1 shadow-sm"
           variant="danger"
-          >Cancelar</b-button
-        >
+        ><i
+            class="fa fa-times-circle"
+            aria-hidden="true"
+          ></i> Cancelar</b-button>
       </b-form-row>
       <h5 v-if="error">{{ error_cont }}</h5>
     </b-form>
+    <div v-if="vistaPrevia">
+      <h6 class="display-4">Vista previa</h6>
+      <b-card>
+        <b-card-text v-html="contenido"></b-card-text>
+      </b-card>
+
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 export default {
   name: "CrearTema",
   data() {
     return {
       value: [],
-      titulo: '',
-      contenido: '',
+      titulo: "",
+      contenido: "",
       idCategoria: this.$route.params.id,
       error: false,
-      error_cont: 'No se pudo enviar el nuevo tema',
+      error_cont: "No se pudo enviar el nuevo tema",
+      editor: ClassicEditor,
+      editorData: "",
+      editorConfig: {
+        language: "es"
+      },
+      vistaPrevia: false
     };
   },
   computed: {
-    ...mapGetters('login', ['usuario']),
-    ...mapGetters('temas', ['temas']),
+    ...mapGetters("login", ["usuario"]),
+    ...mapGetters("temas", ["temas"])
   },
   methods: {
-    ...mapActions('temas', ['enviarTema']),
-    getTema () {
-      return{
-        ID_tema: this.idCategoria + '-' + this.temas.length,
+    ...mapActions("temas", ["enviarTema", "updateTema"]),
+    getTema() {
+      return {
         Titulo: this.titulo,
         IDcategoria: this.idCategoria,
         contenido: this.contenido,
         IDcreador: this.usuario.ID_usuario
-      }
+      };
     },
-    _enviarTema: async function(){
-      const resultado = await this.enviarTema(this.getTema())
-      if(resultado){
+    _enviarTema: async function() {
+      const resultado = await this.enviarTema(this.getTema());
+      if (resultado.error) {
         this.error = true;
       } else {
-        this.$router.push(`/categorias/${this.idCategoria}/temas/${this.getTema().ID_tema}`);
+        this.$router.push({
+          name: "Tema",
+          params: { idCategoria: this.idCategoria, idTema: resultado.id }
+        });
       }
-    },
-  // countTemas: async function(id) {
-  //   const resultado = await this.axios
-  //     .get(`/api/temas-cantidad/${id}`)
-  //     .then((res) => {
-  //       if (res.data.error) {
-  //         return null;
-  //       } else {
-  //         return res.data;
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       return e;
-  //     });
-  //   return resultado;
-  // },
-  },
+    }
+  }
 };
 </script>
 

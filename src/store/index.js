@@ -1,29 +1,30 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import login from "@/modules/login";
 import usuarios from "@/modules/usuarios";
 import categorias from "@/modules/categorias";
 import temas from "@/modules/temas";
-Vue.use(Vuex)
+import mensajes from "@/modules/mensajes";
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    cargando: false
+    cargando: false,
   },
   mutations: {
-    setCargando(state){
+    setCargando(state) {
       state.cargando = !state.cargando;
-    }
+    },
   },
-  actions: {
-  },
+  actions: {},
   getters: {
-    cargando: state => state.cargando
+    cargando: (state) => state.cargando,
   },
   modules: {
     login,
     usuarios,
     categorias,
-    temas
-  }
-})
+    temas,
+    mensajes
+  },
+});

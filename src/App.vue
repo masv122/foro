@@ -25,8 +25,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .contenido {
   margin-top: 5rem;
+}
+body{
+  background-color: #eee;
 }
 </style>

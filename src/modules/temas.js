@@ -48,7 +48,7 @@ export default {
           if (res.data.error) {
             return null;
           } else {
-            return res.data;
+            return res.data.temas;
           }
         })
         .catch((e) => {
@@ -63,33 +63,67 @@ export default {
         .then((res) => {
           commit("setCargando", null, { root: true });
           if (res.data.error) {
-            return false;
+            return res.data.error;
           } else {
-            return true;
+            return res.data.id;
           }
         })
         .catch((e) => {
           return e;
         });
-      commit("agregarTema", tema);
       return resultado;
     },
     updateTema: async function({ commit }, id) {
       commit("setCargando", null, { root: true });
-      const temas = await Vue.axios
+      const tema = await Vue.axios
         .get(`/api/temas/${id}`)
         .then((res) => {
           commit("setCargando", null, { root: true });
           if (res.data.error) {
             return null;
           } else {
-            return res.data;
+            return res.data.tema;
           }
         })
         .catch((e) => {
           return e;
         });
-      commit("updateTema", temas);
+      commit("updateTema", tema);
+      return tema;
+    },
+    previewTemasCategoria: async function({ commit }, id) {
+      commit("setCargando", null, { root: true });
+      const temas = await Vue.axios
+        .get(`/api/temas-categorias-limitadas/${id}`)
+        .then((res) => {
+          commit("setCargando", null, { root: true });
+          if (res.data.error) {
+            return [];
+          } else {
+            return res.data.temas;
+          }
+        })
+        .catch((e) => {
+          return e;
+        });
+      return temas;
+    },
+    countTemasCategoria: async function({ commit }, id) {
+      commit("setCargando", null, { root: true });
+      const resultado = await Vue.axios
+        .get(`/api/temas-cantidad/${id}`)
+        .then((res) => {
+          commit("setCargando", null, { root: true });
+          if (res.data.error) {
+            return [];
+          } else {
+            return res.data.cant;
+          }
+        })
+        .catch((e) => {
+          return e;
+        });
+      return resultado;
     },
   },
 };

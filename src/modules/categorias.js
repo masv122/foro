@@ -38,7 +38,7 @@ export default {
           if (res.data.error) {
             return null;
           } else {
-            return res.data;
+            return res.data.categorias;
           }
         })
         .catch((e) => {

@@ -1,39 +1,58 @@
 <template>
   <div>
-       <b-card title="Mejor Comentario" border-variant="success">
+    <b-card
+      title="Mejor Comentario"
+      border-variant="success"
+      class="shadow-sm"
+    >
       <div>
-        <a href="#">
-          <i class="fa fa-user-circle"
-                ><sup>
-                  <i class="fa fa-medal"
-                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
-                  >
-                  <i class="fa fa-medal"
-                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
-                  >
-                  <i class="fa fa-medal"
-                    ><sup><b-badge pill variant="light">0</b-badge></sup></i
-                  >
-                </sup>
-              </i>
-        </a>
+        <b-link>
+          <i class="fa fa-user-circle">
+          </i>
+        </b-link>
+        {{ nombreCompleto }}
       </div>
-      <b-card-text>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore magni
-        neque laboriosam quod iure eum debitis, assumenda quis sapiente!
-        Blanditiis perferendis aliquam quod voluptatibus reprehenderit molestias
-        unde ut quia distinctio!
+      <b-card-text v-html="contenido">
       </b-card-text>
-      <template v-slot:footer>
-        Ultimo comentario: Lorem ipsum dolor...
-      </template>
     </b-card>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
-    name: 'ComentarioMiniatura'
+  name: "ComentarioMiniatura",
+  props: {
+    contenido: {
+      type: String,
+      default: ""
+    },
+    idUsuario: {
+      type: String,
+      default: ""
+    }
+  },
+  computed: {
+    nombreCompleto() {
+      return this.apellido + ", " + this.nombre;
+    }
+  },
+  data() {
+    return {
+      nombre: "",
+      apellido: "",
+      comentarioCorrecto: null
+    };
+  },
+  methods: {
+    ...mapActions("usuarios", ["updateUsuario"]),
+    ...mapActions("mensajes", ["loadComentarioCorrecto"])
+  },
+  async mounted() {
+    const usuario = await this.updateUsuario(this.idUsuario);
+    this.nombre = usuario.Nombre_usuario;
+    this.apellido = usuario.Apellido_usuario;
+  }
 };
 </script>
 

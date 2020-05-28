@@ -12,19 +12,28 @@
         <b-link
           class="text-white"
           :to="{ name: 'Categoria', params: { id: categoria.ID_categoria } }"
-          ><h3>{{ categoria.Titulo }}</h3></b-link
         >
+          <h3>{{ categoria.Titulo }}</h3>
+        </b-link>
         <p>{{ categoria.Desc_categoria }}</p>
       </template>
-      <b-container fluid class="my-1">
+      <b-container
+        fluid
+        class="my-1"
+      >
         <b-card-group columns>
-          <TemaMiniatura />
-          <TemaMiniatura />
-          <TemaMiniatura />
+          <TemaMiniatura
+            v-for="(tema, index) in temas"
+            :key="index"
+            :titulo="tema.Titulo"
+            :contenido="tema.contenido"
+            :idTema="tema.ID_tema"
+            :idCategoria="tema.IDcategoria"
+          />
         </b-card-group>
       </b-container>
       <template v-slot:footer>
-        <h6>Temas: {{ categoria.Nro_temas }}</h6>
+        <h6>Temas: {{ nroTemas }}</h6>
         <h6>
           Comentarios: {{ categoria.Nro_mensajes }}
           <h6 class="float-right">
@@ -39,6 +48,7 @@
 
 <script>
 import TemaMiniatura from "@/components/TemaMiniatura.vue";
+import { mapActions } from "vuex";
 export default {
   name: "Categoria",
   props: {
@@ -46,6 +56,19 @@ export default {
       type: Object,
       default: null
     }
+  },
+  data() {
+    return {
+      temas: [],
+      nroTemas: "",
+    };
+  },
+  async created() {
+    this.temas = await this.previewTemasCategoria(this.categoria.ID_categoria);
+    this.nroTemas = await this.countTemasCategoria(this.categoria.ID_categoria);
+  },
+  methods: {
+    ...mapActions("temas", ["previewTemasCategoria", "countTemasCategoria"])
   },
   components: {
     TemaMiniatura
