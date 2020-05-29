@@ -45,7 +45,7 @@
                 </template>
                 <b-form-input
                   id="input-1"
-                  type="text"
+                  type="search"
                   required
                   placeholder="Buscar"
                   class="input border-primary"

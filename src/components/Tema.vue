@@ -59,6 +59,7 @@
       </b-row>
       <template v-slot:footer>
         <h6 v-if="ultimoMensaje">Ultimo Mensaje: {{ ultimoMensaje.Fecha | moment("from") }}</h6>
+        <h6 v-else>Sin comentarios</h6>
         <h6>
           Comentarios: {{ Nro_respuestas }}
           <h6 class="float-right">ID Tema: {{ ID_tema }}</h6>

@@ -12,6 +12,8 @@ import moment from "moment";
 import "moment/locale/es";
 import VueMoment from "vue-moment";
 import CKEditor from "@ckeditor/ckeditor5-vue";
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
 Vue.use(CKEditor);
 Vue.use(VueMoment, {
   moment,

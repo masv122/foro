@@ -33,10 +33,13 @@
           <TemaMiniatura
             v-for="(tema, index) in temas"
             :key="index"
-            :titulo="tema.Titulo"
+            :ID_tema="tema.ID_tema"
+            :Titulo="tema.Titulo"
+            :IDcategoria="tema.IDcategoria"
+            :IDcreador="tema.IDcreador"
+            :Fecha="tema.Fecha"
+            :Fecha_ultimo_mensaje="tema.Fecha_ultimo_mensaje"
             :contenido="tema.contenido"
-            :idTema="tema.ID_tema"
-            :idCategoria="tema.IDcategoria"
           />
         </b-card-group>
       </b-container>

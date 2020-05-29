@@ -10,18 +10,15 @@
           <b-list-group class="text-center">
             <b-list-group-item
               href="#"
+              class="bg-primary"
               @click="votar(0)"
+              :disabled="isLiked"
             >
               <i
-                class="fa fa-chevron-up"
+                class="fa fa-chevron-up text-white"
                 aria-hidden="true"
               ></i>
-              <small>
-                <b-badge
-                  pill
-                  variant="secondary"
-                >0</b-badge>
-              </small>
+              <b-badge variant="light">{{ votos.likes }}</b-badge>
             </b-list-group-item>
             <b-list-group-item
               :disabled="!isDisabled"
@@ -37,15 +34,12 @@
             <b-list-group-item
               href="#"
               @click="votar(1)"
+              :disabled="isDisliked"
+              class="bg-danger"
             >
-              <small>
-                <b-badge
-                  pill
-                  variant="secondary"
-                >0</b-badge>
-              </small>
+              <b-badge variant="light">{{ votos.dislikes }}</b-badge>
               <i
-                class="fa fa-chevron-down"
+                class="fa fa-chevron-down text-white"
                 aria-hidden="true"
               ></i>
             </b-list-group-item>
@@ -115,7 +109,12 @@ export default {
         idMensaje: this.ID_mensaje,
         idTema: this.$route.params.idTema
       },
-      tipo: null
+      tipo: null,
+      votos: {
+        likes: 0,
+        dislikes: 0
+      },
+      votoUsuario: null
     };
   },
   computed: {
@@ -135,23 +134,56 @@ export default {
         },
         IDtema: this.$route.params.idTema
       };
+    },
+    paramsVotoUsuario() {
+      return {
+        id_usuario: this.usuario.ID_usuario,
+        id_comentario: this.ID_mensaje
+      };
+    },
+    isLiked() {
+      if (this.votoUsuario == null) return false;
+      else if (this.votoUsuario.tipo == 0) return true;
+      else return false;
+    },
+    isDisliked() {
+      if (this.votoUsuario == null) return false;
+      else if (this.votoUsuario.tipo == 1) return true;
+      else return false;
     }
   },
   methods: {
     ...mapActions("usuarios", ["updateUsuario"]),
     ...mapActions("mensajes", ["updateCorrecta", "loadMensajesTema"]),
-    ...mapActions("votos", ["updateVoto"]),
+    ...mapActions("votos", [
+      "updateVoto",
+      "loadVotosConteo",
+      "loadVoto",
+      "modifyVoto"
+    ]),
     async setCorrecta() {
       const resultado = await this.updateCorrecta(this.params);
       if (!resultado) await this.loadMensajesTema(this.$route.params.idTema);
     },
     async votar(voto) {
       this.tipo = voto;
-      await this.updateVoto(this.getVoto);
+      if (this.votoUsuario == null) await this.updateVoto(this.getVoto);
+      else await this.modifyVoto(this.getVoto);
+      this.votoUsuario = await this.loadVoto(this.paramsVotoUsuario);
+      await this.loadVotos();
+    },
+    async loadVotos() {
+      const votos = await this.loadVotosConteo(this.ID_mensaje);
+      if (votos.length > 1) {
+        this.votos.likes = parseInt(votos[0].count);
+        this.votos.dislikes = parseInt(votos[1].count);
+      }
     }
   },
   async mounted() {
     const usuario = await this.updateUsuario(this.IDusuario_creador);
+    this.votoUsuario = await this.loadVoto(this.paramsVotoUsuario);
+    await this.loadVotos();
     this.nombre = usuario.Nombre_usuario;
     this.apellido = usuario.Apellido_usuario;
   }

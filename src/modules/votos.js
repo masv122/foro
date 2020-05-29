@@ -1,7 +1,7 @@
 import Vue from "vue";
 export default {
+  namespaced: true,
   state: {
-    namespaced: true,
     value: "my value",
   },
   getters: {
@@ -27,19 +27,37 @@ export default {
           commit("setCargando", null, { root: true });
           alert(e);
         });
-      dispatch("mensajes/loadMensajesTema", params.IDtema);
+      dispatch("mensajes/loadMensajesTema", params.IDtema, { root: true });
       return resultado;
     },
     loadVoto: async function({ commit }, params) {
       commit("setCargando", null, { root: true });
       const resultado = await Vue.axios
-        .get("/api/voto", params)
+        .get(`/api/voto/${params.id_usuario}/${params.id_comentario}`)
         .then((res) => {
           commit("setCargando", null, { root: true });
           if (res.data.error) {
             return null;
           } else {
             return res.data.voto;
+          }
+        })
+        .catch((e) => {
+          commit("setCargando", null, { root: true });
+          alert(e);
+        });
+      return resultado;
+    },
+    loadVotosConteo: async function({ commit }, id) {
+      commit("setCargando", null, { root: true });
+      const resultado = await Vue.axios
+        .get(`/api/voto-conteo/${id}`)
+        .then((res) => {
+          commit("setCargando", null, { root: true });
+          if (res.data.error) {
+            return null;
+          } else {
+            return res.data.count;
           }
         })
         .catch((e) => {
@@ -60,7 +78,7 @@ export default {
           commit("setCargando", null, { root: true });
           alert(e);
         });
-      dispatch("mensajes/loadMensajesTema", params.IDtema);
+      dispatch("mensajes/loadMensajesTema", params.IDtema, { root: true });
       return resultado;
     },
   },

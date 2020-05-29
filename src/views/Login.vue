@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form
-      class="py-2 px-4 w-50 login mx-auto text-center shadow-sm rounded"
+      class="py-2 px-4 w-50 login mx-auto text-center shadow-sm rounded bg-white"
       @submit.prevent=""
     >
       <i class="fa fa-user-circle text-primary" aria-hidden="true"></i>
